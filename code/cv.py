@@ -22,3 +22,7 @@ y_test = y
 clf.fit(X_train, y_train)
 
 clf.score(X_test, y_test)
+
+from sklearn.model_selection import cross_val_score
+
+scores = cross_val_score(clf, X_train, y_train, cv=10)
