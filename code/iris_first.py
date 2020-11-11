@@ -77,3 +77,8 @@ for train_size in train_sizes:
 
     all_mean.append(scores.mean()*100)
     all_std.append(scores.std()*100)
+
+
+plt.plot(train_sizes, all_mean)
+plt.plot(train_sizes, all_mean)
+plt.errorbar(train_sizes, all_mean, yerr=all_std)
