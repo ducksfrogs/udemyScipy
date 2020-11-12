@@ -12,9 +12,6 @@ clf = linear_model.LogisticRegression()
 
 data = load_breast_cancer()
 
-X = data.data
-y = data.target
-
 
 ss = ShuffleSplit(n_splits=1,
                   train_size=0.5,test_size=0.5)
@@ -41,24 +38,21 @@ plt.xlabel(data.feature_names[3])
 plt.ylabel(data.feature_names[4])
 
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+mmsclaer = MinMaxScaler([-1,1])
 
-scaler = StandardScaler()
+mmsclaer.fit(X_train)
 
-scaler.fit(X_train)
+X_train_mmscale = mmsclaer.transform(X_train)
 
-X_train_scale = scaler.transform(X_train)
+X_test_mmscale = mmscaler.transform(X_test)
 
-X_train_scale.mean(axis=0), X_train_scale.std(axis=0)
-
-X_test_scale = scaler.transform(X_test)
-
-plt.scatter(X_train_scale[:, 3],
-             X_train_scale[:, 4],
+plt.scatter(X_train_mmscale[:, 3],
+             X_train_mmscale[:, 4],
              c='blue',
              label='train')
-plt.scatter(X_test_scale[:, 3],
-            X_test_scale[:, 4],c='red', label='test')
+plt.scatter(X_test_mmscale[:, 3],
+            X_test_mmscale[:, 4],c='red', label='test')
 plt.xlabel(data.feature_names[3]+"(standaised)")
 plt.ylabel(data.feature_names[3]+"(standaised)")
 plt.legend(loc="best")

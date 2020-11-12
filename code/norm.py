@@ -41,17 +41,17 @@ plt.xlabel(data.feature_names[3])
 plt.ylabel(data.feature_names[4])
 
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import Normalizer
 
-scaler = StandardScaler()
+normalizer = Normalizer()
 
-scaler.fit(X_train)
 
-X_train_scale = scaler.transform(X_train)
+
+X_train_scale = normalizer.transform(X_train)
 
 X_train_scale.mean(axis=0), X_train_scale.std(axis=0)
 
-X_test_scale = scaler.transform(X_test)
+X_test_scale = normalizer.transform(X_test)
 
 plt.scatter(X_train_scale[:, 3],
              X_train_scale[:, 4],
