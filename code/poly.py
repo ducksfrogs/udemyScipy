@@ -29,3 +29,9 @@ polf.fit(X_train)
 
 X_train_poly = polf.transform(X_train)
 X_test_poly =polf.transform(X_test)
+
+n_features = X_train_poly.shape[1]
+i_range = range(1, n_features, 10)
+
+X_train_poly_pca = pca.transform(X_train_poly)
+X_test_poly_pca = pca.transform(X_test_poly)
