@@ -51,3 +51,16 @@ print(classification_report(y_test, y_pred, digits=4))
 recall_0 = TP / (TP + FN)
 
 precision_0 = TP / (TP + FP)
+
+recall_1 = TN / (FP + TN)
+
+FP/ (TN+ FP)
+
+precision_1 = TN / (TN + FN)
+
+f1_score_0 = 2* recall_0 * precision_0 / (recall_0 + precision_0)
+f1_score_1 = 2* recall_1 * precision_1 / (recall_1 + precision_1)
+
+from sklearn.metrics import f1_score
+
+f1_score(y_test, y_pred, pos_label=0), f1_score(y_test, y_pred, pos_label=1)
