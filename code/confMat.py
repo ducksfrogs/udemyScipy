@@ -59,3 +59,72 @@ X = data.data
 y= data.target
 
 img = data.images
+
+for i in range(10):
+    i_th_digit = data.images[data.target==i]
+    for j in range(0,15):
+        plt.subplot(10, 15, i * 15 + j +1)
+        plt.axis('off')
+        plt.imshow(i_th_digit[j], interpolation='none')
+
+from sklearn.model_selection import ShuffleSplit
+
+ss = ShuffleSplit(n_splits=1, train_size=0.8, test_size=0.2, random_state=0)
+
+train_index, test_index = next(ss.split(X, y))
+
+X_train, X_test = X[train_index], X[test_index]
+y_train, y_test = y[train_index], y[test_index]
+
+clf.fit(X_train, y_train)
+clf.score(X_test, y_test)
+
+
+y_pred = clf.predict(X_test)
+
+conf_mat = confusion_matrix(y_test, y_pred)
+
+df = pd.DataFrame(conf_mat,
+                  columns=range(0,10),
+                  index=range(0,10))
+
+from sklearn.decomposition import PCA
+pca = PCA(whiten=True)
+pca.fit(X_train)
+
+X_train_pca = pca.transform(X_train)
+X_test_pca = pca.transform(X_test)
+
+clf.fit(X_train_pca, y_train)
+clf.score(X_test_pca, y_test)
+
+for i in range(10):
+    i_th_digit = X_train_pca[y_train==i]
+    for j in range(0,15):
+        plt.subplot(10, 15, i * 15 + j  +1)
+        plt.axis('off')
+        plt.imshow(i_th_digit[j].reshape(8,8), interpolation=None)
+
+
+y_pred_pca = clf.predict(X_test_pca)
+
+conf_mat = confusion_matrix(y_test, y_pred_pca)
+
+df = pd.DataFrame(conf_mat,
+                  columns=range(0,10),
+                  index=range(0,10))
+
+
+
+scores = []
+
+for i in range(1,65):
+    clf.fit(X_train_pca[:, 0:i], y_train)
+    score = clf.score(X_test_pca[:, 0:i], y_test)
+    print(i, score)
+    scores.append(score)
+
+scores = np.array(scores)
+
+plt.plot(scores)
+plt.ylim(0.9, 1)
