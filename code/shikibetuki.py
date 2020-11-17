@@ -49,3 +49,61 @@ for n in [1,5,10,15]:
     plotBoundary(X, clf)
     plt.title("{0}-NN".format(n))
     plt.show()
+
+from sklearn.datasets import load_breast_cancer
+
+data = load_breast_cancer()
+
+X = data.data
+y = data.target
+
+
+from sklearn.model_selection import ShuffleSplit
+
+ss = ShuffleSplit(n_splits=1, train_size=0.8, test_size=0.2, random_state=0)
+
+train_index, test_index = next(ss.split(X, y))
+
+X_train, X_test = X[train_index], X[test_index]
+y_train, y_test = y[train_index], y[test_index]
+
+clf = neighbors.KNeighborsClassifier(n_neighbors=1)
+clf.fit(X_train, y_train)
+
+clf.score(X_train, y_train)
+
+clf.score(X_test, y_test)
+
+
+ n_range = range(1,20)
+ scores = []
+
+ for n in n_range:
+     clf.n_neighbors = n
+     score = clf.score(X_test, y_test)
+     print(n ,score)
+     scores.append(score)
+scores = np.array(scores)
+
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+
+scaler.fit(X_train)
+X_train_scale = scaler.transform(X_train)
+
+X_test_scale = scaler.transform(X_test)
+
+clf = neighbors.KNeighborsClassifier(n_neighbors=1)
+scores2 []
+clf.fit(X_train_scale, y_train)
+for n in n_range:
+    clf.n_neighbors = n
+    score = clf.score(X_test_scale, y_test)
+    print(n, score)
+    scores.append(score)
+
+scores2 = np.array(scores2)
+
+plt.plot(n_range, scores)
+plt.plot(n_range, scores2)
