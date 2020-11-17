@@ -47,5 +47,35 @@ clf = LogisticRegression()
 clf.fit(X, y)
 
 plt.scatter(X[:,0], X[:, 1], marker='o', s=50, c=y)
-
 plotBoundary(X, clf)
+
+from sklearn import svm
+
+clf = svm.SVC(kernel='linear', C=10)
+
+clf.fit(X,y)
+
+plt.scatter(X[:,0], X[:, 1], marker='o', s=50, c=y, edgecolors='k')
+plotBoundary(X, clf)
+
+clf = svm.SVC(kernel='rbf', C=10)
+
+clf.fit(X,y)
+
+plt.scatter(X[:,0], X[:, 1], marker='o', s=50, c=y, edgecolors='k')
+plotBoundary(X, clf)
+
+
+def plotBoundary2(X, clf, boundary=True):
+    colors = ['k'];
+    linestyle = ['-'];
+    levels = [0]
+
+    x_min = min(X[:, 0])
+    x_max = max(X[:, 0])
+    y_min = min(X[:, 1])
+    x_max = max(X[:, 1])
+
+    XX, YY = np.mgrid[x_min:x_max:200j, y_min:y_max:200j]
+
+    z = clf.decision_function(np.c_[XX.ravel(), YY.ravel()])
