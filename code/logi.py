@@ -28,3 +28,14 @@ clf.score(X_test, y_test)
 
 
 X_test_value = clf.decision_function(X_test)
+
+sorted_va  = np.sort(X_test_value)
+
+plt.plot(X_test_value)
+plt.plot([0,120],[0,0], linestyle='--')
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+plt.plot(sigmoid(sorted_va))
+plt.plot([0,120], [0.5, 0.5], linestyle='--')
