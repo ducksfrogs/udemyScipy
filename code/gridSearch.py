@@ -131,3 +131,30 @@ C_range = 10.0 ** C_range_exp
 
 gamma_range_exp = np.arange(-10.0, 0.0, 3)
 gamma_range = 10**gamma_range_exp
+
+param = [{'C': C_range,
+          'kernel':['linear']},
+         {'C': C_range,
+          'kernel':['rbf']}]
+
+gs = GridSearchCV(clf, param, n_jobs=-1, verbose=2, return_train_score=True)
+gs.fit(X_train, y_train)
+
+gs.best_params_, gs.best_estimator_, gs.best_score_
+
+
+s_linear = (gs.cv_results_['param_kernel']=='linear').data
+
+plt.plot(gs.cv_results_['param_C'][s_linear].data,
+         gs.cv_results_['mean_train_score'][s_linear],
+         label='training (linear)')
+
+plt.plot(gs.cv_results_['param_C'][s_linear].data,
+         gs.cv_results_['mean_test_score'][s_linear],
+         linestyle='--',
+         label='test/val (linear)')
+
+s_rbf = (gs.cv_results_['param_kernel'] == 'rbf').data
+
+for g in gamma_range:
+    s_gammma = (gs.cv_results_['param_gamma'][s_rbf].data==g)
