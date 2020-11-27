@@ -17,3 +17,9 @@ scaler = MinMaxScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
+
+from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression(solver='liblinear')
+
+
+C_range = [1e-5, 1e-3, 1e-2, 1, 1e2, 1e5, 1e10]
