@@ -99,5 +99,35 @@ gs.best_estimator_
 s_linear = (gs.cv_results_['param_kernel']=='linear').data
 
 plt.plot(gs.cv_results_['param_C'][s_linear].data,
-        gs.cv_results_['mean_strain_score'][s_linear],
+        gs.cv_results_['mean_train_score'][s_linear],
         label='training (linear)')
+
+
+plt.plot(gs.cv_results_['param_C'][s_linear].data,
+         gs.cv_results_['mean_test_score'][s_linear].data,
+         label='test/val',
+         linestyle='--')
+
+s_rbf = (gs.cv_results_['param_kernel']=='rbf').data
+
+plt.plot(gs.cv_results_['param_C'][s_rbf].data,
+         gs.cv_results_['mean_test_score'][s_rbf],
+         linestyle="--",
+         label="test/val (rbf)")
+
+
+gs.score(X_test, y_test)
+
+SVC(kernel='rbf').gamma
+
+
+
+from sklearn.svm import SVC
+
+clf = SVC(gamma='auto')
+
+C_range_exp = np.arange(-2.0, 10.0)
+C_range = 10.0 ** C_range_exp
+
+gamma_range_exp = np.arange(-10.0, 0.0, 3)
+gamma_range = 10**gamma_range_exp
