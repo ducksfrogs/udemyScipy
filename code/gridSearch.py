@@ -158,3 +158,41 @@ s_rbf = (gs.cv_results_['param_kernel'] == 'rbf').data
 
 for g in gamma_range:
     s_gammma = (gs.cv_results_['param_gamma'][s_rbf].data==g)
+
+    plt.plot(gs.cv_results_['param_C'][s_gammma].data,
+             gs.cv_results_['mean_train_score'][s_rbf][s_gammma],
+             label="training (rbf, gammma, {0:.e})".format(g))
+
+    plt.plot(gs.cv_results_['param_C'][s_rbf][s_gammma],
+            gs.cv_results_['mean_test_score'][s_rbf][s_gammma],
+            linestyle='--',
+            label='test/val (rbf, gammma, {0:.0e})'.format(g))
+
+plt.ylim(.6, 1.01)
+plt.xscale("log")
+plt.xlabel("C")
+plt.ylabel('accuracy')
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+plt.show()
+
+
+gs.score(X_test, y_test)
+
+
+
+#KNN
+
+from sklearn.neighbors import KNeighborsClassifier
+
+clf = KNeighborsClassifier()
+
+param = {'n_neigbors': range(1,20)}
+
+gs = GridSearchCV(clf, param, return_train_score=True)
+gs.fit(X_train, y_train)
+
+gs.best_params_, gs.best_score_, gs.best_estimator_
+
+plt.errorbar(gs.cv_results_['param_n_neighbors'].data,
+            gs.cv_results_['mean_train_score'],
+            yerr=gs.cv_results_['std_train_score'],label='training')
