@@ -19,4 +19,22 @@ train_df = pd.read_csv('../input/train.csv')
 test_df = pd.read_csv('../input/test.csv')
 combine = [train_df, test_df]
 
-print(train_df.columns.values`)
+print(train_df.columns.values)
+
+
+train_df.info()
+print('_'*20)
+test_df.info()
+
+train_df.describe()
+
+train_df.describe(include=['O'])
+
+train_df[['Pclass', 'Survived']].groupby(
+    ['Pclass'], as_index=False).mean().sort_values(by='Survived', ascending=False)
+
+train_df[["Sex", "Survived"]].groupby(
+    ['Sex'], as_index=False).mean().sort_values(by='Survived', ascending=False)
+
+train_df[["SibSp", "Survived"]].groupby(
+    ['SibSp'], as_index=False).mean().sort_values(by='Survived', ascending=False)
